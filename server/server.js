@@ -1,15 +1,15 @@
-const { ApolloServer, gql } = require('apollo-server');
- 
+const { ApolloServer, gql } = require("apollo-server");
+
 const users = [
   {
-    firstName: 'John',
-    lastName: 'Doe',
-    fullName: 'John Doe' 
+    firstName: "John",
+    lastName: "Doe",
+    fullName: "John Doe",
   },
   {
-    firstName: 'Anne',
-    lastName: 'Smith',
-    fullName: 'Anne Smith' 
+    firstName: "Anne",
+    lastName: "Smith",
+    fullName: "Anne Smith",
   },
 ];
 
@@ -18,7 +18,7 @@ const typeDefs = gql`
     firstName: String
     lastName: String
     fullName: String
-  } 
+  }
 
   type Query {
     users: [User]
@@ -29,29 +29,28 @@ const typeDefs = gql`
     addUser(firstName: String, lastName: String): User
   }
 `;
- 
+
 const resolvers = {
   Query: {
     users: () => users,
-    usersByFullName: (_, {substring}, __) => (
-      users.filter(user => user.fullName.includes(substring))
-    )
+    usersByFullName: (_, { substring }, __) =>
+      users.filter((user) => user.fullName.includes(substring.toLowerCase())),
   },
   Mutation: {
     addUser: (_, { firstName, lastName }, __) => {
       const newUser = {
         firstName,
         lastName,
-        fullName: `${firstName} ${lastName}` 
+        fullName: `${firstName} ${lastName}`,
       };
       users.push(newUser);
       return newUser;
-    }
-  }
+    },
+  },
 };
 
 const server = new ApolloServer({ typeDefs, resolvers });
 
 server.listen().then(({ url }) => {
-  console.log('Now browse to http://localhost:4000' + server.graphqlPath)
+  console.log("Now browse to http://localhost:4000" + server.graphqlPath);
 });

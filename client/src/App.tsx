@@ -1,7 +1,8 @@
 import React from "react";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import UsersList from "./components/UsersList";
 import UserForm from "./components/UserForm";
+import UsersFilteredList from "./components/UsersFilteredList";
 
 const client = new ApolloClient({
   uri: "http://localhost:4000/graphql",
@@ -11,7 +12,10 @@ const client = new ApolloClient({
 const App = () => {
   return (
     <ApolloProvider client={client}>
-      <UsersList />
+      <div style={{ display: "flex" }}>
+        <UsersList />
+        <UsersFilteredList />
+      </div>
       <UserForm />
     </ApolloProvider>
   );
