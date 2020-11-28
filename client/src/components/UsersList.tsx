@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import React from "react";
+import { gql, useQuery } from "@apollo/client";
 
 type User = {
   fullName: string;
 };
 
-const GET_USERS = gql`
+export const GET_USERS = gql`
   query GetUsers {
     users {
       fullName
@@ -13,45 +13,8 @@ const GET_USERS = gql`
   }
 `;
 
-const ADD_USER = gql`
-  mutation AddUser($firstName: String, $lastName: String) {
-    addUser(firstName: $firstName, lastName: $lastName) {
-      fullName
-    }
-  }
-`;
-
-interface GetUsersResult {
-  users: [User];
-}
-
 const UsersList = () => {
   const { loading, error, data } = useQuery(GET_USERS);
-  const [addUser] = useMutation(ADD_USER);
-
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    await addUser({
-      variables: { firstName, lastName },
-      update: (cache, { data: { addUser: addedUser } }) => {
-        const oldData = cache.readQuery<GetUsersResult>({ query: GET_USERS });
-        if (oldData === null) return;
-        cache.writeQuery({
-          query: GET_USERS,
-          data: {
-            users: [...oldData.users, addedUser],
-          },
-        });
-      },
-    });
-
-    setFirstName("");
-    setLastName("");
-  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>`Error! ${error.message}`</p>;
@@ -63,24 +26,6 @@ const UsersList = () => {
           <li key={index}>{user.fullName}</li>
         ))}
       </ul>
-
-      <form onSubmit={(e) => onSubmit(e)}>
-        <div>
-          <input
-            value={firstName}
-            placeholder="First name"
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-        </div>
-        <div>
-          <input
-            value={lastName}
-            placeholder="Last name"
-            onChange={(e) => setLastName(e.target.value)}
-          />
-        </div>
-        <button type="submit">Add User</button>
-      </form>
     </>
   );
 };
