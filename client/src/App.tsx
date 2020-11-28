@@ -1,10 +1,18 @@
-import * as React from "react";
-import "./styles.css";
+import React from "react";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import UsersList from "./components/UsersList";
 
-export default function App() {
+const client = new ApolloClient({
+  uri: "http://localhost:4000/graphql",
+  cache: new InMemoryCache(),
+});
+
+const App = () => {
   return (
-    <div className="App">
-      <h1>Hello World</h1>
-    </div>
+    <ApolloProvider client={client}>
+      <UsersList />
+    </ApolloProvider>
   );
-}
+};
+
+export default App;
