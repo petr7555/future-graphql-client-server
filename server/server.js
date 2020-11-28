@@ -1,15 +1,34 @@
 const express = require('express');
 const { ApolloServer, gql } = require('apollo-server-express');
  
+const users = [
+  {
+    firstName: 'John',
+    lastName: 'Doe',
+    fullName: `${this.firstName} ${this.lastName}` 
+  },
+  {
+    firstName: 'Anne',
+    lastName: 'Smith',
+    fullName: `${this.firstName} ${this.lastName}` 
+  },
+];
+
 const typeDefs = gql`
+  type User {
+    firstName: String
+    lastName: String
+    fullName: String
+  } 
+
   type Query {
-    hello: String
+    users: [User]
   }
 `;
  
 const resolvers = {
   Query: {
-    hello: () => 'Hello world!',
+    users: () => users,
   },
 };
  
