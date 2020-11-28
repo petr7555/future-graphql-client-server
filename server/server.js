@@ -24,12 +24,27 @@ const typeDefs = gql`
   type Query {
     users: [User]
   }
+
+  type Mutation {
+    addUser(firstName: String, lastName: String): User
+  }
 `;
  
 const resolvers = {
   Query: {
     users: () => users,
   },
+  Mutation: {
+    addUser: (_, { firstName, lastName }, __) => {
+      const newUser = {
+        firstName,
+        lastName,
+        fullName: `${firstName} ${lastName}` 
+      };
+      users.push(newUser);
+      return newUser;
+    }
+  }
 };
  
 const server = new ApolloServer({ typeDefs, resolvers });
