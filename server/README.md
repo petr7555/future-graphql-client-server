@@ -10,6 +10,15 @@ query ListAllUsers {
 }
 ```
 
+h3. List users by part of their full name
+```qraphql
+query ListUsersByPartOfFullName {
+  usersByFullName (substring: "Joh") {
+    fullName
+  }
+}
+```
+
 h3. Add a user
 ```qraphql
 mutation NewUser {

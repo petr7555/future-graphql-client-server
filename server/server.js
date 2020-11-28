@@ -5,12 +5,12 @@ const users = [
   {
     firstName: 'John',
     lastName: 'Doe',
-    fullName: `${this.firstName} ${this.lastName}` 
+    fullName: 'John Doe' 
   },
   {
     firstName: 'Anne',
     lastName: 'Smith',
-    fullName: `${this.firstName} ${this.lastName}` 
+    fullName: 'Anne Smith' 
   },
 ];
 
@@ -23,6 +23,7 @@ const typeDefs = gql`
 
   type Query {
     users: [User]
+    usersByFullName(substring: String): [User]
   }
 
   type Mutation {
@@ -33,6 +34,9 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     users: () => users,
+    usersByFullName: (_, {substring}, __) => (
+      users.filter(user => user.fullName.includes(substring))
+    )
   },
   Mutation: {
     addUser: (_, { firstName, lastName }, __) => {
