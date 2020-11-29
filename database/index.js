@@ -14,7 +14,8 @@ pool
   .connect()
   .then((client) =>
     client.query(
-      "CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, first_name TEXT, last_name TEXT)"
+      "CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, first_name TEXT, last_name TEXT, " +
+        "full_name TEXT GENERATED ALWAYS AS (first_name || ' ' || last_name) STORED)"
     )
   )
   .then((res) => console.log("Table users is created:", res))
@@ -28,7 +29,7 @@ app.get("/users", async (req, res) => {
   try {
     const client = await pool.connect();
     const result = await client.query(
-      'SELECT id, first_name as "firstName", last_name as "lastName" FROM users'
+      'SELECT id, first_name as "firstName", last_name as "lastName", full_name as "fullName" FROM users'
     );
     console.info("Users have been queried.", result.rows);
     res.send(result.rows);
@@ -46,7 +47,8 @@ app.post("/users", async (req, res) => {
   try {
     const client = await pool.connect();
     const queryText =
-      'INSERT INTO users(first_name, last_name) VALUES($1, $2) RETURNING id, first_name as "firstName", last_name as "lastName"';
+      'INSERT INTO users(first_name, last_name) VALUES($1, $2) ' +
+        'RETURNING id, first_name as "firstName", last_name as "lastName", full_name as "fullName"';
     const savedUser = await client.query(queryText, [firstName, lastName]);
     console.info("A user has been saved.", savedUser.rows[0]);
     res.send(savedUser.rows[0]);

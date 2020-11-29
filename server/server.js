@@ -36,13 +36,6 @@ const resolvers = {
   },
 };
 
-const getWithFullName = (users) => {
-  return users.map((user) => ({
-    ...user,
-    fullName: `${user.firstName} ${user.lastName}`,
-  }));
-};
-
 class UserAPI extends RESTDataSource {
   constructor() {
     super();
@@ -50,14 +43,11 @@ class UserAPI extends RESTDataSource {
   }
 
   async getUsers() {
-    return this.get("users").then((users) => getWithFullName(users));
+    return this.get("users");
   }
 
   async addUser(user) {
-    return this.post("users", user).then((user) => ({
-      ...user,
-      fullName: `${user.firstName} ${user.lastName}`,
-    }));
+    return this.post("users", user);
   }
 }
 
