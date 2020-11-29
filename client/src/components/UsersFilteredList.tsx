@@ -15,7 +15,7 @@ export const GET_USERS_BY_FULLNAME = gql`
 
 const UsersFilteredList = () => {
   const [input, setInput] = useState("");
-  const { loading, error, data } = useQuery(GET_USERS_BY_FULLNAME, {
+  const { loading, error, data, refetch } = useQuery(GET_USERS_BY_FULLNAME, {
     variables: { substring: input },
   });
 
@@ -37,6 +37,7 @@ const UsersFilteredList = () => {
           ))}
         </ul>
       )}
+      <button onClick={() => refetch()}>Refetch</button>
     </div>
   );
 };
