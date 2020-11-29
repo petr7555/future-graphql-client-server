@@ -1,0 +1,16 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "h3. How to run\r Run `node server.js` in this folder, then go to `http://localhost:4000/graphql`.",
+  "main": "server.js",
+  "dependencies": {
+    "apollo-server": "^2.19.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
