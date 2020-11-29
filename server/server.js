@@ -22,7 +22,7 @@ const typeDefs = gql`
 
   type Query {
     users: [User]
-    usersByFullName(substring: String): [User]
+    usersByPartialName(partOfName: String): [User]
   }
 
   type Mutation {
@@ -33,9 +33,9 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     users: () => users,
-    usersByFullName: (_, { substring }, __) =>
+    usersByPartialName: (_, { partOfName }, __) =>
       users.filter((user) =>
-        user.fullName.toLowerCase().includes(substring.toLowerCase())
+        user.fullName.toLowerCase().includes(partOfName.toLowerCase())
       ),
   },
   Mutation: {

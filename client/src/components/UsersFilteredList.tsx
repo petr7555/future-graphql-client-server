@@ -5,9 +5,9 @@ type User = {
   fullName: string;
 };
 
-export const GET_USERS_BY_FULLNAME = gql`
-  query UsersByFullName($substring: String) {
-    usersByFullName(substring: $substring) {
+export const GET_USERS_BY_PARTIAL_NAME = gql`
+  query UsersByPartialName($partOfName: String) {
+    usersByPartialName(partOfName: $partOfName) {
       fullName
     }
   }
@@ -15,9 +15,12 @@ export const GET_USERS_BY_FULLNAME = gql`
 
 const UsersFilteredList = () => {
   const [input, setInput] = useState("");
-  const { loading, error, data, refetch } = useQuery(GET_USERS_BY_FULLNAME, {
-    variables: { substring: input },
-  });
+  const { loading, error, data, refetch } = useQuery(
+    GET_USERS_BY_PARTIAL_NAME,
+    {
+      variables: { partOfName: input },
+    }
+  );
 
   return (
     <div>
@@ -29,10 +32,10 @@ const UsersFilteredList = () => {
         }}
       />
       {loading && <p>Loading...</p>}
-      {error && <p>`Error! ${error.message}`</p>}
+      {error && <p>Error! {error.message}</p>}
       {!loading && !error && (
         <ul>
-          {data.usersByFullName.map((user: User, index: number) => (
+          {data.usersByPartialName.map((user: User, index: number) => (
             <li key={index}>{user.fullName}</li>
           ))}
         </ul>
