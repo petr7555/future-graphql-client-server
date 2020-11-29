@@ -1,5 +1,6 @@
 h3. How to run
-Run `npm install` and then `npm start` in this folder, then go to `http://localhost:4000/graphql`.
+Run `npm install` and then `npm start` in this folder, 
+then go to `http://localhost:4000/`.
 
 h3. Get all users
 ```qraphql

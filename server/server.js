@@ -1,17 +1,5 @@
 const { ApolloServer, gql } = require("apollo-server");
-
-const users = [
-  {
-    firstName: "John",
-    lastName: "Doe",
-    fullName: "John Doe",
-  },
-  {
-    firstName: "Anne",
-    lastName: "Smith",
-    fullName: "Anne Smith",
-  },
-];
+const { RESTDataSource } = require("apollo-datasource-rest");
 
 const typeDefs = gql`
   type User {
@@ -32,27 +20,55 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    users: () => users,
-    usersByPartialName: (_, { partOfName }, __) =>
-      users.filter((user) =>
+    users: (_, __, { dataSources }) => {
+      return dataSources.userAPI.getUsers();
+    },
+    usersByPartialName: async (_, { partOfName }, { dataSources }) => {
+      const users = await dataSources.userAPI.getUsers();
+      return users.filter((user) =>
         user.fullName.toLowerCase().includes(partOfName.toLowerCase())
-      ),
+      );
+    },
   },
   Mutation: {
-    addUser: (_, { firstName, lastName }, __) => {
-      const newUser = {
-        firstName,
-        lastName,
-        fullName: `${firstName} ${lastName}`,
-      };
-      users.push(newUser);
-      return newUser;
-    },
+    addUser: (_, { firstName, lastName }, { dataSources }) =>
+      dataSources.userAPI.addUser({ firstName, lastName }),
   },
 };
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const getWithFullName = (users) => {
+  return users.map((user) => ({
+    ...user,
+    fullName: `${user.firstName} ${user.lastName}`,
+  }));
+};
+
+class UserAPI extends RESTDataSource {
+  constructor() {
+    super();
+    this.baseURL = process.env.REST_URL;
+  }
+
+  async getUsers() {
+    return this.get("users").then((users) => getWithFullName(users));
+  }
+
+  async addUser(user) {
+    return this.post("users", user).then((user) => ({
+      ...user,
+      fullName: `${user.firstName} ${user.lastName}`,
+    }));
+  }
+}
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  dataSources: () => ({
+    userAPI: new UserAPI(),
+  }),
+});
 
 server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}`);
+  console.log(`Server ready at ${url}`);
 });
