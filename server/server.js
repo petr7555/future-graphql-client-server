@@ -34,7 +34,9 @@ const resolvers = {
   Query: {
     users: () => users,
     usersByFullName: (_, { substring }, __) =>
-      users.filter((user) => user.fullName.includes(substring.toLowerCase())),
+      users.filter((user) =>
+        user.fullName.toLowerCase().includes(substring.toLowerCase())
+      ),
   },
   Mutation: {
     addUser: (_, { firstName, lastName }, __) => {
