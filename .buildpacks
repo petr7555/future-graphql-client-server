@@ -1,2 +1,0 @@
-server=https://github.com/heroku/heroku-buildpack-nodejs
-client=https://github.com/mars/create-react-app-buildpack.git
