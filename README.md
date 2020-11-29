@@ -1,3 +1,12 @@
+## Where can I see this application running?
+Visit https://future-graphql-client.herokuapp.com/ to see the application running.
+It uses GraphQL API located at https://future-graphql-server.herokuapp.com/.
+The GraphQL API is connected to PostgreSQL database running at https://future-graphql-database.herokuapp.com/.
+
+## How to run locally?
+Execute `npm install` and `npm start` in all subdirectories of this repository.
+Then go to http://localhost:3000/.
+
 ## Heroku deployment
 [subdir-heroku-buildpack](https://elements.heroku.com/buildpacks/timanovsky/subdir-heroku-buildpack) 
 allows deploying from a subdirectory. I can deploy three Heroku apps from the same repository.
