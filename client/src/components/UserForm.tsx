@@ -12,7 +12,7 @@ const ADD_USER = gql`
 `;
 
 interface GetUsersResult {
-  users: [User];
+  users: User[];
 }
 
 const UserForm = () => {
