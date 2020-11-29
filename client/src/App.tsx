@@ -12,11 +12,19 @@ const client = new ApolloClient({
 const App = () => {
   return (
     <ApolloProvider client={client}>
-      <div style={{ display: "flex" }}>
-        <UsersList />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-evenly",
+          marginTop: "50px",
+        }}
+      >
+        <div>
+          <UsersList />
+          <UserForm />
+        </div>
         <UsersFilteredList />
       </div>
-      <UserForm />
     </ApolloProvider>
   );
 };
