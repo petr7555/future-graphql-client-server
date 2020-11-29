@@ -4,10 +4,10 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const PORT = process.env.PORT || 5000;
-
+console.log(process.env.NODE_ENV);
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV !== "dev",
+  ssl: { rejectUnauthorized: true },
 });
 
 pool
@@ -47,8 +47,8 @@ app.post("/users", async (req, res) => {
   try {
     const client = await pool.connect();
     const queryText =
-      'INSERT INTO users(first_name, last_name) VALUES($1, $2) ' +
-        'RETURNING id, first_name as "firstName", last_name as "lastName", full_name as "fullName"';
+      "INSERT INTO users(first_name, last_name) VALUES($1, $2) " +
+      'RETURNING id, first_name as "firstName", last_name as "lastName", full_name as "fullName"';
     const savedUser = await client.query(queryText, [firstName, lastName]);
     console.info("A user has been saved.", savedUser.rows[0]);
     res.send(savedUser.rows[0]);
