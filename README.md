@@ -11,7 +11,7 @@ Then go to http://localhost:3000/.
 [subdir-heroku-buildpack](https://elements.heroku.com/buildpacks/timanovsky/subdir-heroku-buildpack) 
 allows deploying from a subdirectory. I can deploy three Heroku apps from the same repository.
 1. Create three heroku apps: `future-graphql-database`, `future-graphql-server` and `future-graphql-client`.
-2. Set them both to deploy from GitHub.
+2. Set them all to deploy from GitHub.
 3. For database run:
     ```bash
     heroku buildpacks:clear --app future-graphql-database
