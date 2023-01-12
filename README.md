@@ -1,7 +1,8 @@
 ## Where can I see this application running?
-Visit https://future-graphql-client.herokuapp.com/ to see the application running.
-It uses GraphQL API located at https://future-graphql-server.herokuapp.com/.
-The GraphQL API is connected to PostgreSQL database running at https://future-graphql-database.herokuapp.com/.
+Visit https://future-graphql-client.onrender.com/ to see the application running.
+It uses GraphQL API located at https://future-graphql-server.onrender.com/.
+The GraphQL API is connected to Rest API of PostgreSQL database running at https://future-graphql-database.onrender.com/.
+The PostgreSQL runs on https://www.elephantsql.com/.
 
 ## How to run locally?
 Execute `npm install` and `npm start` in all subdirectories of this repository.
